@@ -20,7 +20,7 @@ class userController extends FOSRestController
     {
         $restresult = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
         if ($restresult === null) {
-            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+            return new View(['message' => 'There are no users yet', 'error' => 'true'], Response::HTTP_NOT_FOUND);
         }
         return $restresult;
     }
@@ -32,7 +32,7 @@ class userController extends FOSRestController
     {
         $singleresult = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
         if ($singleresult === null) {
-            return new View("user not found", Response::HTTP_NOT_FOUND);
+            return new View(['message' => 'User not found', 'error' => 'true'], Response::HTTP_NOT_FOUND);
         }
         return $singleresult;
     }
