@@ -19,9 +19,9 @@ class userController extends FOSRestController
     public function getUsers()
     {
         $restresult = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
-        if ($restresult === null) {
+        if ($restresult === null)
             return new View(['message' => 'There are no users yet', 'error' => 'true'], Response::HTTP_NOT_FOUND);
-        }
+        
         return $restresult;
     }
 
@@ -31,9 +31,9 @@ class userController extends FOSRestController
     public function getSingleUser($id)
     {
         $singleresult = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
-        if ($singleresult === null) {
+        if ($singleresult === null)
             return new View(['message' => 'User not found', 'error' => 'true'], Response::HTTP_NOT_FOUND);
-        }
+
         return $singleresult;
     }
 
@@ -46,9 +46,8 @@ class userController extends FOSRestController
         $name = $request->get('name');
         $role = $request->get('role');
         if(empty($name) || empty($role))
-        {
             return new View(['message' => 'Null values are not allowed', 'error' => 'true'], Response::HTTP_NOT_ACCEPTABLE);
-        }
+
         $data->setName($name);
         $data->setRole($role);
         $em = $this->getDoctrine()->getManager();
