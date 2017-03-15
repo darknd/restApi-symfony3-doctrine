@@ -68,33 +68,23 @@ class userController extends FOSRestController
         $role = $request->get('role');
         $em = $this->getDoctrine()->getManager();
         $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
-        if (empty($user)) {
+
+        if (empty($user))
             return new View(['message' => 'User not found', 'error' => 'true'], Response::HTTP_NOT_FOUND);
-        }
-        elseif(!empty($name) && !empty($role)){
-            $user->setName($name);
-            $user->setRole($role);
-            $em->flush();
-            $last_id = $user->getId();
-            $response = ['id' => $last_id, 'error' => 'false'];
-            return new View($response, Response::HTTP_OK);
-        }
-        elseif(empty($name) && !empty($role)){
-            $user->setRole($role);
-            $em->flush();
-            $last_id = $user->getId();
-            $response = ['id' => $last_id, 'error' => 'false'];
-            return new View($response, Response::HTTP_OK);
-        }
-        elseif(!empty($name) && empty($role)){
-            $user->setName($name);
-            $em->flush();
-            $last_id = $user->getId();
-            $response = ['id' => $last_id, 'error' => 'false'];
-            return new View($response, Response::HTTP_OK);
-        }
-        else
+
+        if (empty($name) && empty($role))
             return new View(['message' => 'Null values are not allowed', 'error' => 'true'], Response::HTTP_NOT_ACCEPTABLE);
+
+        if (!empty($name))
+            $user->setName($name);
+
+        if (!empty($role))
+            $user->setRole($role);
+
+        $em->flush();
+        $last_id = $user->getId();
+        $response = ['id' => $last_id, 'error' => 'false'];
+        return new View($response, Response::HTTP_OK);
     }
 
     /**
@@ -104,15 +94,13 @@ class userController extends FOSRestController
     {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($id);
-        if (empty($user)) {
+        if (empty($user))
             return new View(['message' => 'User not found', 'error' => 'true'], Response::HTTP_NOT_FOUND);
-        }
-        else {
-            $em->remove($user);
-            $em->flush();
-            $last_id = $user->getId();
-            $response = ['id' => $last_id, 'error' => 'false'];
-            return new View($response, Response::HTTP_OK);
-        }
+
+        $em->remove($user);
+        $em->flush();
+        $last_id = $user->getId();
+        $response = ['id' => $last_id, 'error' => 'false'];
+        return new View($response, Response::HTTP_OK);
     }
 }
